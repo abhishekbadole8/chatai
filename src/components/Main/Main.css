@@ -70,7 +70,7 @@ form button {
     font-weight: 600;
 }
 
-.engine {
+.assistant {
     border-top-right-radius: 12.5px;
     background-color: #183D3D;
 }
@@ -99,4 +99,18 @@ form button {
     right: -.7rem;
     transform: rotate(90deg);
     border-bottom: 20px solid #4a4a4a;
+}
+
+@media only screen and (max-width:850px) {
+    .Main {
+        padding: 5%;
+    }
+
+    main {
+        overflow-x: hidden;
+        height: 91%;
+    }
+    li{
+        margin-bottom: 2%;
+    }
 }
