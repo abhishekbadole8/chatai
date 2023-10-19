@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Main.css"
 import axios from "axios";
 
@@ -6,6 +6,8 @@ function Main() {
     const [chats, setChats] = useState([])
     const [inputValue, setInputValue] = useState("")
     const [loading, setLoading] = useState(false)
+
+    const timestamp = new Date().toLocaleString();
 
     const fetchChat = async () => {
         try {
@@ -19,13 +21,11 @@ function Main() {
             })
             if (response.data) {
                 const data = response.data
+
                 setChats(prevChats => [
                     ...prevChats,
-                    {
-                        role: "user",
-                        content: inputValue
-                    },
-                    { ...data }
+                    { ...data, timestamp },
+
                 ]);
                 setLoading(false)
             }
@@ -35,11 +35,19 @@ function Main() {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (inputValue) {
+            setChats(prevChats => [
+                ...prevChats,
+                {
+                    role: "user",
+                    content: inputValue,
+                    timestamp
+                }
+            ]);
             setLoading(true)
-            fetchChat();
+            await fetchChat();
             setInputValue("")
         }
     }
@@ -48,20 +56,36 @@ function Main() {
         <div className="Main">
             <main>
                 <ul id="chat-list">
+
+                    {chats.length === 0 &&
+                        <li className="assistant">
+                            <p className="list-desc">Start Typing...</p>
+                            <p className="list-dat">21 Aug | 08:00</p>
+                            <span className="shape left" />
+                        </li>}
+
                     {chats?.map((chat, index) => {
-                        const { role, content } = chat
+                        const { role, content, timestamp } = chat
+                        console.log(chat);
                         return <li key={index} className={role}>
                             <p className="list-desc">{content}</p>
-                            <p className="list-dat">21 Aug | 08:00</p>
+                            <p className="list-dat">{timestamp}</p>
                             <span className={role === "user" ? "shape right" : "shape left"} />
                         </li>
                     })}
+
+                    {loading && (
+                        <li className="assistant">
+                            <p className="list-desc">Loading...</p>
+                            <p className="list-dat">21 Aug | 08:00</p>
+                            <span className="shape left" />
+                        </li>)}
 
                 </ul>
             </main>
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Enter Input...." value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-                <button type="submit" disabled={loading}>Submit</button>
+                <button type="submit" disabled={loading}>{loading ? 'Wait...' : 'Submit'}</button>
             </form>
         </div>
     )

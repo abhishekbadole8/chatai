@@ -8,7 +8,7 @@ main {
     border-left: 1px solid #3b3b3b;
     border-right: 1px solid #3b3b3b;
     color: azure;
-    height: 85%;
+    height: 84%;
     padding: 2%;
     margin-bottom: 2.5%;
     overflow: auto;
@@ -103,12 +103,13 @@ form button {
 
 @media only screen and (max-width:850px) {
     .Main {
-        padding: 5%;
+        padding: 2%;
     }
 
     main {
         overflow-x: hidden;
         height: 91%;
+        padding: 4%;
     }
     li{
         margin-bottom: 2%;
