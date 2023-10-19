@@ -42,6 +42,7 @@ function Main() {
                 }
             ]);
             setLoading(true)
+            setInputValue("")
             await fetchChat([
                 ...chats,
                 {
@@ -49,7 +50,6 @@ function Main() {
                     content: inputValue
                 }
             ]);
-            setInputValue("")
         }
     }
 
