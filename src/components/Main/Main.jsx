@@ -9,15 +9,10 @@ function Main() {
 
     const timestamp = new Date().toLocaleString();
 
-    const fetchChat = async () => {
+    const fetchChat = async (chats) => {
         try {
             const response = await axios.post(`https://chatai-aqub.onrender.com/api/chat`, {
-                message: [
-                    {
-                        "role": "user",
-                        "content": inputValue
-                    }
-                ]
+                message: chats.map(chat => ({ role: chat.role, content: chat.content }))
             })
             if (response.data) {
                 const data = response.data
@@ -47,7 +42,13 @@ function Main() {
                 }
             ]);
             setLoading(true)
-            await fetchChat();
+            await fetchChat([
+                ...chats,
+                {
+                    role: "user",
+                    content: inputValue
+                }
+            ]);
             setInputValue("")
         }
     }
@@ -66,7 +67,6 @@ function Main() {
 
                     {chats?.map((chat, index) => {
                         const { role, content, timestamp } = chat
-                        console.log(chat);
                         return <li key={index} className={role}>
                             <p className="list-desc">{content}</p>
                             <p className="list-dat">{timestamp}</p>
