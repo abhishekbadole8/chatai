@@ -7,7 +7,24 @@ function Main() {
     const [inputValue, setInputValue] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const timestamp = new Date().toLocaleString();
+    function formatCustomDate(inputDate) {
+        const monthNames = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
+        const month = monthNames[inputDate.getMonth()];
+        const day = inputDate.getDate();
+        const hours = inputDate.getHours();
+        const minutes = inputDate.getMinutes();
+        const amOrPm = hours >= 12 ? 'pm' : 'am';
+        const formattedDate = `${day} ${month} ${hours % 12 || 12}:${minutes} ${amOrPm}`;
+
+        return formattedDate;
+    }
+
+    const currentDate = new Date();
+    const formattedDate = formatCustomDate(currentDate);
 
     const fetchChat = async (chats) => {
         try {
@@ -19,7 +36,7 @@ function Main() {
 
                 setChats(prevChats => [
                     ...prevChats,
-                    { ...data, timestamp },
+                    { ...data, dateandtime: formattedDate },
 
                 ]);
                 setLoading(false)
@@ -38,7 +55,7 @@ function Main() {
                 {
                     role: "user",
                     content: inputValue,
-                    timestamp
+                    dateandtime: formattedDate
                 }
             ]);
             setLoading(true)
@@ -52,7 +69,7 @@ function Main() {
             ]);
         }
     }
-
+  
     return (
         <div className="Main">
             <main>
@@ -61,7 +78,7 @@ function Main() {
                     {chats.length === 0 &&
                         <li className="assistant">
                             <p className="list-desc">Start Typing...</p>
-                            <p className="list-dat">21 Aug | 08:00</p>
+                            <p className="list-dat">{formattedDate}</p>
                             <span className="shape left" />
                         </li>}
 
@@ -69,7 +86,7 @@ function Main() {
                         const { role, content, timestamp } = chat
                         return <li key={index} className={role}>
                             <p className="list-desc">{content}</p>
-                            <p className="list-dat">{timestamp}</p>
+                            <p className="list-dat">{formattedDate}</p>
                             <span className={role === "user" ? "shape right" : "shape left"} />
                         </li>
                     })}
@@ -77,7 +94,7 @@ function Main() {
                     {loading && (
                         <li className="assistant">
                             <p className="list-desc">Loading...</p>
-                            <p className="list-dat">21 Aug | 08:00</p>
+                            <p className="list-dat">{formattedDate}</p>
                             <span className="shape left" />
                         </li>)}
 

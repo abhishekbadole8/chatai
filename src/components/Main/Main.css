@@ -45,8 +45,8 @@ li {
 }
 
 .list-dat {
-    font-size: .9rem;
-    width: 15%;
+    /* font-size: .9rem; */
+    width: 20%;
 }
 
 /* ----------form--------------- */
@@ -111,7 +111,11 @@ form button {
         height: 91%;
         padding: 4%;
     }
-    li{
+
+    li {
         margin-bottom: 2%;
+        font-size: .80rem;
+        padding: .65rem;
     }
+
 }
